@@ -1,0 +1,26 @@
+<!-- redirect.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Complete</title>
+</head>
+<body>
+  <h2>✅ Login Successful</h2>
+  <p>You can close this tab and return to VS Code.</p>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const state = params.get('state');
+
+    fetch("https://your-backend.com/save-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code, state }),
+    });
+
+    console.log("Auth code received:", code);
+  </script>
+</body>
+</html>
