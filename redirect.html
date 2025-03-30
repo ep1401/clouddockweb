@@ -1,26 +1,31 @@
-<!-- redirect.html -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Login Complete</title>
-</head>
-<body>
-  <h2>✅ Login Successful</h2>
-  <p>You can close this tab and return to VS Code.</p>
+<html>
+  <head><title>Authorizing...</title></head>
+  <body>
+    <h2>🔐 Connecting your Azure account...</h2>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+      const userId = params.get("state");
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
-    const state = params.get('state');
-
-    fetch("https://your-backend.com/save-code", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code, state }),
-    });
-
-    console.log("Auth code received:", code);
-  </script>
-</body>
+      if (code && userId) {
+        fetch("https://lhvuliyyfavdoevigjwl.supabase.co/rest/v1/azure_temp_credentials?azure_id=eq." + userId, {
+          method: "PATCH",
+          headers: {
+            "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxodnVsaXl5ZmF2ZG9ldmlnandsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIwNjk3MzksImV4cCI6MjA1NzY0NTczOX0.BYK8g5pHX--8E0LvBhslgZdPei8h_SMEjyhsSvajq5s",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxodnVsaXl5ZmF2ZG9ldmlnandsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIwNjk3MzksImV4cCI6MjA1NzY0NTczOX0.BYK8g5pHX--8E0LvBhslgZdPei8h_SMEjyhsSvajq5s",
+            "Content-Type": "application/json",
+            "Prefer": "return=representation"
+          },
+          body: JSON.stringify({ auth_code: code })
+        }).then(() => {
+          document.body.innerHTML = "<h2>✅ You're all set. Go back to VS Code.</h2>";
+        }).catch(() => {
+          document.body.innerHTML = "<h2>❌ Something went wrong.</h2>";
+        });
+      } else {
+        document.body.innerHTML = "<h2>❌ Missing login info. Please restart.</h2>";
+      }
+    </script>
+  </body>
 </html>
