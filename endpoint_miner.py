@@ -64,8 +64,7 @@ class EndpointMiner:
 if __name__ == "__main__":
     print("Starting")
     miner = EndpointMiner()
+    while True:
+        print("Running miner...", time.time())
+        time.sleep(10)
 
-    with miner:
-        while True:
-            print("Running miner...", time.time())
-            time.sleep(10)
